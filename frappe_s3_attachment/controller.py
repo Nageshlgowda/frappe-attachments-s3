@@ -108,7 +108,8 @@ class S3Operations(object):
         Strips the file extension to set the content_type in metadata.
         """
         mime_type = magic.from_file(file_path, mime=True)
-        key = self.key_generator(file_name, parent_doctype, parent_name)
+        _key = self.key_generator(file_name, parent_doctype, parent_name)
+        key = ("private/" if is_private else "public/") + _key
         content_type = mime_type
         try:
             if is_private:
@@ -127,10 +128,8 @@ class S3Operations(object):
                     file_path, self.BUCKET, key,
                     ExtraArgs={
                         "ContentType": content_type,
-                        "ACL": 'public-read',
                         "Metadata": {
                             "ContentType": content_type,
-
                         }
                     }
                 )
