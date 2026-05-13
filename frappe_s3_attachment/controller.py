@@ -37,12 +37,14 @@ class S3Operations(object):
                 aws_access_key_id=self.s3_settings_doc.aws_key,
                 aws_secret_access_key=self.s3_settings_doc.aws_secret,
                 region_name=self.s3_settings_doc.region_name,
+                endpoint_url='https://s3.{}.amazonaws.com'.format(self.s3_settings_doc.region_name),
                 config=Config(signature_version='s3v4')
             )
         else:
             self.S3_CLIENT = boto3.client(
                 's3',
                 region_name=self.s3_settings_doc.region_name,
+                endpoint_url='https://s3.{}.amazonaws.com'.format(self.s3_settings_doc.region_name),
                 config=Config(signature_version='s3v4')
             )
         self.BUCKET = self.s3_settings_doc.bucket_name
